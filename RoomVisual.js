@@ -175,6 +175,15 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
       if(!this.roads) this.roads = []
       this.roads.push([x,y])
       break;
+    default:
+      this.circle(x, y, {
+        fill: colors.light,
+        radius: 0.35,
+        stroke: colors.dark,
+        strokeWidth: 0.20,
+        opacity: opts.opacity
+      })
+      break;
   }
 }
 
