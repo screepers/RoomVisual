@@ -308,7 +308,7 @@ RoomVisual.prototype.test = function test(){
   this.structure(demopos[0]+3,demopos[1]+1,STRUCTURE_TERMINAL)
   this.structure(demopos[0]+4,demopos[1]+0,STRUCTURE_EXTENSION)
   this.structure(demopos[0]+5,demopos[1]+1,STRUCTURE_SPAWN)
-  this.structure(demopos[0]+6,demopos[1]+0STRUCTURE_POWER_SPAWN)
+  this.structure(demopos[0]+6,demopos[1]+0,STRUCTURE_POWER_SPAWN)
   this.structure(demopos[0]+7,demopos[1]+1,STRUCTURE_NUKER)
   this.structure(demopos[0]+8,demopos[1]+0,STRUCTURE_OBSERVER)
 
