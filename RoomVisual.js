@@ -3,7 +3,8 @@ const colors = {
   light: '#AAAAAA',
   road: '#666', // >:D
   dark: '#181818',
-  outline: '#8FBB93'
+  outline: '#8FBB93',
+  power: '#f4331f'
 }
 
 RoomVisual.prototype.structure = function(x,y,type,opts={}){
@@ -165,6 +166,74 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
         opacity: opts.opacity
       })
       break;
+    case STRUCTURE_POWER_SPAWN:
+      this.circle(x,y,{
+        radius: 0.70,
+        fill: colors.dark,
+        stroke: '#CCCCCC',
+        strokeWidth: 0.10,
+        opacity: opts.opacity
+      })
+      this.circle(x,y,{
+        radius: 0.65,
+        stroke: colors.power,
+        fill: colors.dark,
+        strokeWidth: 0.10,
+        opacity: opts.opacity
+      })
+      this.circle(x,y,{
+        radius: 0.45,
+        stroke: colors.power,
+        fill: colors.dark,
+        strokeWidth: 0.15,
+        opacity: opts.opacity
+      })
+      break;
+    case STRUCTURE_NUKER:
+      let outline = [
+        [0,-1],
+        [-0.47,0.2],
+        [-0.5,0.5],
+        [0.5,0.5],
+        [0.47,0.2],
+        [0,-1],
+      ];
+      outline = relPoly(x,y,outline)
+      this.poly(outline,{
+        stroke: colors.outline,
+        strokeWidth: 0.05,
+        fill: colors.dark,
+        opacity: opts.opacity
+      })
+      let inline = [
+        [0,-.80],
+        [-0.40,0.2],
+        [0.40,0.2],
+        [0,-.80],
+      ]
+      inline = relPoly(x,y,inline)
+      this.poly(inline,{
+        stroke: colors.outline,
+        strokeWidth: 0.01,
+        fill: colors.gray,
+        opacity: opts.opacity
+      })
+      break;
+    case STRUCTURE_OBSERVER:
+      this.circle(x,y,{
+        radius: 0.45,
+        fill: colors.dark,
+        stroke: colors.outline,
+        strokeWidth: 0.07,
+        opacity: opts.opacity
+      })
+      this.circle(x,y + .2,{
+        radius: 0.2,
+        fill: colors.outline,
+        stroke: false,
+        opacity: opts.opacity
+      })
+      break;
     case STRUCTURE_ROAD:
       this.circle(x,y,{
         radius: 0.175,
@@ -239,6 +308,9 @@ RoomVisual.prototype.test = function test(){
   this.structure(demopos[0]+3,demopos[1]+1,STRUCTURE_TERMINAL)
   this.structure(demopos[0]+4,demopos[1]+0,STRUCTURE_EXTENSION)
   this.structure(demopos[0]+5,demopos[1]+1,STRUCTURE_SPAWN)
+  this.structure(demopos[0]+6,demopos[1]+0STRUCTURE_POWER_SPAWN)
+  this.structure(demopos[0]+7,demopos[1]+1,STRUCTURE_NUKER)
+  this.structure(demopos[0]+8,demopos[1]+0,STRUCTURE_OBSERVER)
 
   let stage = (Game.time % 3) + 1
   Game.rooms.E3N31.buildFlower({ x:28, y:28 },stage)
