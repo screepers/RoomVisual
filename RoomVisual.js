@@ -2,9 +2,10 @@ const colors = {
   gray: '#555555',
   light: '#AAAAAA',
   road: '#666', // >:D
+  energy: '#FFE87B',
+  power: '#F53547',
   dark: '#181818',
-  outline: '#8FBB93',
-  power: '#f4331f'
+  outline: '#8FBB93'
 }
 
 RoomVisual.prototype.structure = function(x,y,type,opts={}){
@@ -28,10 +29,30 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
       break
     case STRUCTURE_SPAWN:
       this.circle(x,y,{
-        radius: 0.70,
+        radius: 0.65,
         fill: colors.dark,
         stroke: '#CCCCCC',
         strokeWidth: 0.10,
+        opacity: opts.opacity
+      })
+      this.circle(x,y,{
+        radius: 0.40,
+        fill: colors.energy,
+        opacity: opts.opacity
+      })
+
+      break;
+    case STRUCTURE_POWER_SPAWN:
+      this.circle(x,y,{
+        radius: 0.65,
+        fill: colors.dark,
+        stroke: colors.power,
+        strokeWidth: 0.10,
+        opacity: opts.opacity
+      })
+      this.circle(x,y,{
+        radius: 0.40,
+        fill: colors.energy,
         opacity: opts.opacity
       })
       break;
@@ -150,7 +171,6 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
       this.circle(x,y,{
         radius: 0.6,
         fill: colors.dark,
-        // fill: 'transparent',
         stroke: colors.outline,
         strokeWidth: 0.05,
         opacity: opts.opacity
@@ -166,26 +186,54 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
         opacity: opts.opacity
       })
       break;
-    case STRUCTURE_POWER_SPAWN:
+    case STRUCTURE_ROAD:
       this.circle(x,y,{
-        radius: 0.70,
-        fill: colors.dark,
-        stroke: '#CCCCCC',
-        strokeWidth: 0.10,
+        radius: 0.175,
+        fill: colors.road,
+        stroke: false,
         opacity: opts.opacity
       })
+      if(!this.roads) this.roads = []
+      this.roads.push([x,y])
+      break;
+    case STRUCTURE_RAMPART:
       this.circle(x,y,{
         radius: 0.65,
-        stroke: colors.power,
-        fill: colors.dark,
+        fill: '#434C43',
+        stroke: '#5D735F',
         strokeWidth: 0.10,
         opacity: opts.opacity
       })
+      break;
+    case STRUCTURE_WALL:
       this.circle(x,y,{
-        radius: 0.45,
-        stroke: colors.power,
+        radius: 0.40,
         fill: colors.dark,
-        strokeWidth: 0.15,
+        stroke: colors.light,
+        strokeWidth: 0.05,
+        opacity: opts.opacity
+      })
+      break;
+    case STRUCTURE_STORAGE:
+      this.circle(x, y, {
+        fill: colors.energy,
+        radius: 0.35,
+        stroke: colors.dark,
+        strokeWidth: 0.20,
+        opacity: opts.opacity
+      })
+      break;
+    case STRUCTURE_OBSERVER:
+      this.circle(x, y, {
+        fill: colors.dark,
+        radius: 0.45,
+        stroke: colors.outline,
+        strokeWidth: 0.05,
+        opacity: opts.opacity
+      })
+      this.circle(x + 0.225, y, {
+        fill: colors.outline,
+        radius: 0.20,
         opacity: opts.opacity
       })
       break;
@@ -219,31 +267,6 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
         opacity: opts.opacity
       })
       break;
-    case STRUCTURE_OBSERVER:
-      this.circle(x,y,{
-        radius: 0.45,
-        fill: colors.dark,
-        stroke: colors.outline,
-        strokeWidth: 0.07,
-        opacity: opts.opacity
-      })
-      this.circle(x,y + .2,{
-        radius: 0.2,
-        fill: colors.outline,
-        stroke: false,
-        opacity: opts.opacity
-      })
-      break;
-    case STRUCTURE_ROAD:
-      this.circle(x,y,{
-        radius: 0.175,
-        fill: colors.road,
-        stroke: false,
-        opacity: opts.opacity
-      })
-      if(!this.roads) this.roads = []
-      this.roads.push([x,y])
-      break;
     default:
       this.circle(x, y, {
         fill: colors.light,
@@ -271,7 +294,7 @@ const dirs = [
 RoomVisual.prototype.connectRoads = function(opts={}){
   let color = opts.color || colors.road || 'white'
   if(!this.roads) return
-  // this.text(this.roads.map(r=>r.join(',')).join(' '),25,23)  
+  // this.text(this.roads.map(r=>r.join(',')).join(' '),25,23)
   this.roads.forEach(r=>{
     // this.text(`${r[0]},${r[1]}`,r[0],r[1],{ size: 0.2 })
     for(let i=1;i<=4;i++){
@@ -300,7 +323,6 @@ function relPoly(x,y,poly){
 
 RoomVisual.prototype.test = function test(){
   let demopos = [19,24]
-  let start = Game.cpu.getUsed()
   this.clear()
   this.structure(demopos[0]+0,demopos[1]+0,STRUCTURE_LAB)
   this.structure(demopos[0]+1,demopos[1]+1,STRUCTURE_TOWER)
@@ -308,18 +330,4 @@ RoomVisual.prototype.test = function test(){
   this.structure(demopos[0]+3,demopos[1]+1,STRUCTURE_TERMINAL)
   this.structure(demopos[0]+4,demopos[1]+0,STRUCTURE_EXTENSION)
   this.structure(demopos[0]+5,demopos[1]+1,STRUCTURE_SPAWN)
-  this.structure(demopos[0]+6,demopos[1]+0,STRUCTURE_POWER_SPAWN)
-  this.structure(demopos[0]+7,demopos[1]+1,STRUCTURE_NUKER)
-  this.structure(demopos[0]+8,demopos[1]+0,STRUCTURE_OBSERVER)
-
-  let stage = (Game.time % 3) + 1
-  Game.rooms.E3N31.buildFlower({ x:28, y:28 },stage)
-  this.connectRoads()
-  let end = Game.cpu.getUsed()
-  this.text(this.getSize()+'B',demopos[0]+3,demopos[1]+4)
-  this.text(Math.round((end-start)*100)/100,demopos[0]+3,demopos[1]+5)
-  // this.structure(20,5,STRUCTURE_TOWER)
-  // this.structure(20,3,STRUCTURE_TOWER)
-  // this.structure(16,5,STRUCTURE_LAB)
-  // this.structure(16,4,STRUCTURE_LAB)
 }
