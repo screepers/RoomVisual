@@ -267,6 +267,14 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
         opacity: opts.opacity
       })
       break;
+    case STRUCTURE_CONTAINER:
+			this.rect(x - 0.225, y - 0.3, 0.45, 0.6,{
+					fill: options.energy,
+					opacity: options.opacity,
+					stroke: colors.dark,
+					strokeWidth: 0.10,
+				});
+			break;
     default:
       this.circle(x, y, {
         fill: colors.light,
