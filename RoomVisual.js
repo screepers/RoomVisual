@@ -5,8 +5,13 @@ const colors = {
   energy: '#FFE87B',
   power: '#F53547',
   dark: '#181818',
-  outline: '#8FBB93'
+  outline: '#8FBB93',
+  speechText: '#000000',
+  speechBackground: '#2ccf3b'
 }
+
+const speechSize = 0.5
+const speechFont = 'Times New Roman'
 
 RoomVisual.prototype.structure = function(x,y,type,opts={}){
   opts = Object.assign({
@@ -269,7 +274,7 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
       break;
     case STRUCTURE_CONTAINER:
 			this.rect(x - 0.225, y - 0.3, 0.45, 0.6,{
-					fill: options.energy,
+					fill: "yellow",
 					opacity: options.opacity,
 					stroke: colors.dark,
 					strokeWidth: 0.10,
@@ -320,6 +325,34 @@ RoomVisual.prototype.connectRoads = function(opts={}){
     }
   })
 }
+
+
+RoomVisual.prototype.speech = function(text, x, y, opts={}) {
+
+  let pointer = [
+    [-0.2, -0.8],
+    [ 0.2, -0.8],
+    [ 0,   -0.3]
+  ]
+  pointer = relPoly(x,y,pointer)
+  pointer.push(pointer[0])
+
+  this.poly(pointer,{
+    fill: colors.speechBackground,
+    stroke: colors.speechBackground,
+    opacity: 1,
+    strokeWidth: 0.0
+  })
+
+  this.text(text, x, y-1, {
+    color: colors.speechText,
+    backgroundColor: colors.speechBackground,
+    backgroundPadding: 0.1,
+    opacity: 1,
+    font: speechSize + ' ' + speechFont
+  })
+}
+
 
 function relPoly(x,y,poly){
   return poly.map(p=>{
