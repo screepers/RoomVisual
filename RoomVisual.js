@@ -328,6 +328,18 @@ RoomVisual.prototype.connectRoads = function(opts={}){
 
 
 RoomVisual.prototype.speech = function(text, x, y, opts={}) {
+  var background = !!opts.background ? opts.background : colors.speechBackground
+  var textcolor = !!opts.textcolor ? opts.textcolor : colors.speechText
+  var textstyle = !!opts.textstyle ? opts.textstyle : false
+  var textsize = !!opts.textsize ? opts.textsize : speechSize
+  var textfont = !!opts.textfont ? opts.textfont : speechFont
+  var opacity = !!opts.opacity ? opts.opacity : 1
+
+  var fontstring = ''
+  if(textstyle) {
+    fontstring = textstyle + ' '
+  }
+  fontstring += textsize + ' ' + textfont
 
   let pointer = [
     [-0.2, -0.8],
@@ -338,19 +350,54 @@ RoomVisual.prototype.speech = function(text, x, y, opts={}) {
   pointer.push(pointer[0])
 
   this.poly(pointer,{
-    fill: colors.speechBackground,
-    stroke: colors.speechBackground,
-    opacity: 1,
+    fill: background,
+    stroke: background,
+    opacity: opacity,
     strokeWidth: 0.0
   })
 
   this.text(text, x, y-1, {
-    color: colors.speechText,
-    backgroundColor: colors.speechBackground,
+    color: textcolor,
+    backgroundColor: background,
     backgroundPadding: 0.1,
-    opacity: 1,
-    font: speechSize + ' ' + speechFont
+    opacity: opacity,
+    font: fontstring
   })
+}
+
+
+RoomVisual.prototype.animatedPosition = function (x, y, opts={}) {
+
+  let color = !!opts.color ? opts.color : 'blue'
+  let opacity = !!opts.opacity ? opts.opacity : 0.5
+  let radius = !!opts.radius ? opts.radius : 0.75
+  let frames = !!opts.frames ? opts.frames : 6
+
+
+  let angle = (Game.time % frames * 90 / frames) * (Math.PI / 180);
+  let s = Math.sin(angle);
+  let c = Math.cos(angle);
+
+  let sizeMod = Math.abs(Game.time % frames - frames / 2) / 10;
+  radius += radius * sizeMod;
+
+  let points = [
+      rotate(0, -radius, s, c, x, y),
+      rotate(radius, 0, s, c, x, y),
+      rotate(0, radius, s, c, x, y),
+      rotate(-radius, 0, s, c, x, y),
+      rotate(0, -radius, s, c, x, y),
+  ];
+
+  Logger.highlightData(points)
+
+  return this.poly(points, {stroke: color, opacity: opacity});
+}
+
+function rotate(x, y, s, c, px, py) {
+  let xDelta = x * c - y * s;
+  let yDelta = x * s + y * c;
+  return { x: px + xDelta, y: py + yDelta };
 }
 
 
