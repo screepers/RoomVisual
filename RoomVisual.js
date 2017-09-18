@@ -275,7 +275,7 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
     case STRUCTURE_CONTAINER:
 			this.rect(x - 0.225, y - 0.3, 0.45, 0.6,{
 					fill: "yellow",
-					opacity: options.opacity,
+					opacity: opts.opacity,
 					stroke: colors.dark,
 					strokeWidth: 0.10,
 				});
