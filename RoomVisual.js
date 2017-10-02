@@ -290,6 +290,8 @@ RoomVisual.prototype.structure = function(x,y,type,opts={}){
       })
       break;
   }
+  
+  return this;
 }
 
 const dirs = [
@@ -324,6 +326,8 @@ RoomVisual.prototype.connectRoads = function(opts={}){
       }
     }
   })
+  
+  return this;
 }
 
 
@@ -363,6 +367,8 @@ RoomVisual.prototype.speech = function(text, x, y, opts={}) {
     opacity: opacity,
     font: fontstring
   })
+  
+  return this;
 }
 
 
@@ -391,7 +397,9 @@ RoomVisual.prototype.animatedPosition = function (x, y, opts={}) {
 
   Logger.highlightData(points)
 
-  return this.poly(points, {stroke: color, opacity: opacity});
+  this.poly(points, {stroke: color, opacity: opacity});
+  
+  return this;
 }
 
 function rotate(x, y, s, c, px, py) {
@@ -418,4 +426,6 @@ RoomVisual.prototype.test = function test(){
   this.structure(demopos[0]+3,demopos[1]+1,STRUCTURE_TERMINAL)
   this.structure(demopos[0]+4,demopos[1]+0,STRUCTURE_EXTENSION)
   this.structure(demopos[0]+5,demopos[1]+1,STRUCTURE_SPAWN)
+  
+  return this;
 }
