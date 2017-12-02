@@ -395,8 +395,6 @@ RoomVisual.prototype.animatedPosition = function (x, y, opts={}) {
       rotate(0, -radius, s, c, x, y),
   ];
 
-  Logger.highlightData(points)
-
   this.poly(points, {stroke: color, opacity: opacity});
   
   return this;
