@@ -55,6 +55,8 @@ room.visual.animatedPosition(12, 32)
 
 ### Resource badges
 
+![resource-badges](Resource-badges.png)
+
 Draws resource icon of `type` at `x`, `y`, and given `size`.
 Size defaults to `0.25`.
 
