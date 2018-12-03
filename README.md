@@ -6,7 +6,6 @@ connections, speech, resource icons, and even animated position markers.
 ## Installation
 
 Place a copy of the `RoomVisual.js` file from this repository in your project's directory. ie. `path/to/RoomVisual.js`
-Copy `XRoomVisual.resources.js` in orderto be able to draw resource icons.
 
 ## Usage
 
@@ -14,7 +13,6 @@ Require the downloaded file before your main loop.
 
 ```javascript
 require('./path/to/RoomVisual')
-require('./path/to/XRoomVisual.resources')
 ```
 
 ### Structure
