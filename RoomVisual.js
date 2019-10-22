@@ -12,12 +12,148 @@ const colors = {
 
 const speechSize = 0.5
 const speechFont = 'Times New Roman'
+function calculateFactoryLevelGapsPoly() {
+  let x = -0.08;
+  let y = -0.52;
+  let result = [];
+
+  let gapAngle = 16 * (Math.PI / 180);
+  let c1 = Math.cos(gapAngle);
+  let s1 = Math.sin(gapAngle);
+
+  let angle = 72 * (Math.PI / 180);
+  let c2 = Math.cos(angle);
+  let s2 = Math.sin(angle);
+
+  for (let i = 0; i < 5; ++i) {
+    result.push([0.0, 0.0]);
+    result.push([x, y]);
+    result.push([x * c1 - y * s1, x * s1 + y * c1]);
+    let tmpX = x * c2 - y * s2;
+    y = x * s2 + y * c2;
+    x = tmpX;
+  }
+  return result;
+}
+const factoryLevelGaps = calculateFactoryLevelGapsPoly();
 
 RoomVisual.prototype.structure = function(x,y,type,opts={}){
   opts = Object.assign({
     opacity: 1
   },opts)
   switch(type){
+    case STRUCTURE_FACTORY: {
+      const outline = [
+        [-0.68, -0.11],
+        [-0.84, -0.18],
+        [-0.84, -0.32],
+        [-0.44, -0.44],
+        [-0.32, -0.84],
+        [-0.18, -0.84],
+        [-0.11, -0.68],
+        
+        [0.11, -0.68],
+        [0.18, -0.84],
+        [0.32, -0.84],
+        [0.44, -0.44],
+        [0.84, -0.32],
+        [0.84, -0.18],
+        [0.68, -0.11],
+        
+        [0.68, 0.11],
+        [0.84, 0.18],
+        [0.84, 0.32],
+        [0.44, 0.44],
+        [0.32, 0.84],
+        [0.18, 0.84],
+        [0.11, 0.68],
+        
+        [-0.11, 0.68],
+        [-0.18, 0.84],
+        [-0.32, 0.84],
+        [-0.44, 0.44],
+        [-0.84, 0.32],
+        [-0.84, 0.18],
+        [-0.68, 0.11]
+      ];
+      this.poly(outline.map(p => [ p[0] + x, p[1] + y ]), {
+        fill: null,
+        stroke: colors.outline,
+        strokeWidth: 0.05,
+        opacity: opts.opacity
+      });
+      // outer circle
+      this.circle(x, y, {
+        radius: 0.65,
+        fill: '#232323',
+        strokeWidth: 0.035,
+        stroke: '#140a0a',
+        opacity: opts.opacity
+      });
+      const spikes = [
+        [-0.4, -0.1],
+        [-0.8, -0.2],
+        [-0.8, -0.3],
+        [-0.4, -0.4],
+        [-0.3, -0.8],
+        [-0.2, -0.8],
+        [-0.1, -0.4],
+
+        [0.1, -0.4],
+        [0.2, -0.8],
+        [0.3, -0.8],
+        [0.4, -0.4],
+        [0.8, -0.3],
+        [0.8, -0.2],
+        [0.4, -0.1],
+
+        [0.4, 0.1],
+        [0.8, 0.2],
+        [0.8, 0.3],
+        [0.4, 0.4],
+        [0.3, 0.8],
+        [0.2, 0.8],
+        [0.1, 0.4],
+
+        [-0.1, 0.4],
+        [-0.2, 0.8],
+        [-0.3, 0.8],
+        [-0.4, 0.4],
+        [-0.8, 0.3],
+        [-0.8, 0.2],
+        [-0.4, 0.1]
+      ];
+      this.poly(spikes.map(p => [ p[0] + x, p[1] + y ]), {
+        fill: colors.gray,
+        stroke: '#140a0a',
+        strokeWidth: 0.04,
+        opacity: opts.opacity
+      });
+      // factory level circle
+      this.circle(x, y, {
+        radius: 0.54,
+        fill: '#302a2a',
+        strokeWidth: 0.04,
+        stroke: '#140a0a',
+        opacity: opts.opacity
+      });
+      this.poly(factoryLevelGaps.map(p => [ p[0] + x, p[1] + y ]), {
+        fill: '#140a0a',
+        stroke: null,
+        opacity: opts.opacity
+      });
+      // inner black circle
+      this.circle(x, y, {
+        radius: 0.42,
+        fill: '#140a0a',
+        opacity: opts.opacity
+      });
+      this.rect(x - 0.24, y - 0.24, 0.48, 0.48, {
+        fill: '#3f3f3f',
+        opacity: opts.opacity
+      });
+      break;
+    }
     case STRUCTURE_EXTENSION:
       this.circle(x,y,{
         radius: 0.5,
