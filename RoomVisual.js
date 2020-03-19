@@ -637,12 +637,20 @@ const ResourceColors = {
   [RESOURCE_CATALYZED_GHODIUM_ALKALIDE]:    ColorSets.white,
 };
 
+const MINERALS = [
+  RESOURCE_CATALYST,
+  RESOURCE_HYDROGEN,
+  RESOURCE_OXYGEN,
+  RESOURCE_LEMERGIUM,
+  RESOURCE_UTRIUM,
+  RESOURCE_ZYNTHIUM,
+  RESOURCE_KEANIUM
+]
 
 RoomVisual.prototype.resource = function(type, x, y, size = 0.25){
   if (type == RESOURCE_ENERGY || type == RESOURCE_POWER)
     this._fluid(type, x, y, size);
-  else if ([RESOURCE_CATALYST, RESOURCE_HYDROGEN, RESOURCE_OXYGEN, RESOURCE_LEMERGIUM, RESOURCE_UTRIUM, RESOURCE_ZYNTHIUM, RESOURCE_KEANIUM]
-    .includes(type))
+  else if (MINERALS.includes(type))
     this._mineral(type, x, y, size);
   else if (ResourceColors[type] != undefined)
     this._compound(type, x, y, size);
