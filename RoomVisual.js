@@ -462,7 +462,7 @@ const dirs = [
 
 RoomVisual.prototype.connectRoads = function(opts={}){
   let color = opts.color || colors.road || 'white'
-  if(!this.roads) return
+  if(!this.roads) return this
   this.roads.forEach(r=>{
     for(let i=1;i<=4;i++){
       let d = dirs[i]
