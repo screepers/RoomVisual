@@ -1,6 +1,6 @@
 {
   "name": "@screepers/room-visual",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "description": "Extra RoomVisual drawing methods for Screeps: structures, roads, speech bubbles, resource badges",
   "keywords": [
     "screeps",
@@ -27,8 +27,9 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "test": "vitest run",
-    "check:package": "publint && attw --pack . --profile node16",
-    "prepublishOnly": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:package"
+    "check:package": "publint && attw --pack . --profile node16 && pnpm check:consumer",
+    "prepublishOnly": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:package",
+    "check:consumer": "tsc -p consumer"
   },
   "peerDependencies": {
     "@types/screeps": "^3.3.0"

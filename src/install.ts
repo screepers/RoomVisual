@@ -24,7 +24,7 @@ declare global {
       y: number,
       opts?: import('./animatedPosition.js').AnimatedPositionOpts,
     ): RoomVisual
-    /** Clears the visual and draws a few structures near (19, 24) for a quick preview. */
+    /** Clears the visual and draws a sample of structures, roads, resources and symbols for a quick preview. */
     test(): RoomVisual
     /** Draws a resource badge. Returns `OK` or `ERR_INVALID_ARGS`. */
     resource(type: ResourceConstant | string, x: number, y: number, size?: number): 0 | -10
