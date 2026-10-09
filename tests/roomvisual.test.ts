@@ -160,13 +160,22 @@ describe('symbol size', () => {
     return (Math.max(...xs) - Math.min(...xs)) / 2
   }
 
-  it('keeps the default outline unchanged (about one tile wide)', () => {
+  it('defaults to one full tile wide, as before', () => {
     expect(halfWidth()).toBeCloseTo(0.5, 1)
   })
 
-  it('scales the outline with size', () => {
-    expect(halfWidth(0.5)).toBeCloseTo(halfWidth() * 2, 5)
-    expect(halfWidth(0.125)).toBeCloseTo(halfWidth() / 2, 5)
+  it('keeps the default glyph metrics unchanged', () => {
+    const { visual, calls } = fakeVisual()
+    resource(visual, 'symbol_aleph', 10, 10)
+    const text = calls.find((c) => c[0] === 'text')
+    expect(text?.[4]).toMatchObject({ font: 'bold 0.2 arial' })
+    expect(text?.[3]).toBeCloseTo(10.0875, 5)
+  })
+
+  it('treats size as a radius, like the other badges', () => {
+    expect(halfWidth(0.5)).toBeCloseTo(0.5, 1)
+    expect(halfWidth(0.25)).toBeCloseTo(0.25, 1)
+    expect(halfWidth(1)).toBeCloseTo(1, 1)
   })
 })
 

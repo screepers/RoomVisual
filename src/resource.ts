@@ -161,21 +161,27 @@ function compound(visual: RoomVisual, type: ResourceConstant, x: number, y: numb
   })
 }
 
-/** Default `size`. Symbol outlines are drawn 1 tile wide at this size and scale linearly from it. */
+/** Default `size` (badge radius, in grid units). */
 const DEFAULT_SIZE = 0.25
+/** Symbols default to a full tile (radius 0.5), as they always have. */
+const DEFAULT_SYMBOL_SIZE = 0.5
 
 function symbol(visual: RoomVisual, type: string, x: number, y: number, size: number) {
   const s = symbols().get(type)
   if (!s) return
-  const scale = size / DEFAULT_SIZE
+  // The normalised outline is 1 tile wide, so scaling by 2 * size makes `size` the radius,
+  // like the circle badges.
+  const scale = size * 2
   const outline = SYMBOL_OUTLINE.map(([px, py]): [number, number] => [px * scale, py * scale])
   visual.poly(relPoly(x, y, outline), {
     opacity: 1,
     fill: s.color,
     stroke: 'transparent',
   })
-  visual.text(s.glyph, x, y + size * 0.35, {
-    font: `bold ${size * 0.8} arial`,
+  // Glyph metrics are proportional to the outline; at the default size (0.5) they match the
+  // original 0.8 * 0.25 font size and 0.35 * 0.25 offset.
+  visual.text(s.glyph, x, y + size * 0.175, {
+    font: `bold ${size * 0.4} arial`,
     color: 'black',
   })
 }
@@ -188,13 +194,14 @@ export function resource(
   type: ResourceConstant | string,
   x: number,
   y: number,
-  size = DEFAULT_SIZE,
+  size?: number,
 ): 0 | -10 {
   const res = type as ResourceConstant
-  if (res === RESOURCE_ENERGY || res === RESOURCE_POWER) fluid(visual, res, x, y, size)
-  else if (isMineral(res)) mineral(visual, res, x, y, size)
-  else if (resourceColors()[res] !== undefined) compound(visual, res, x, y, size)
-  else if (symbols().has(type)) symbol(visual, type, x, y, size)
+  const r = size ?? DEFAULT_SIZE
+  if (res === RESOURCE_ENERGY || res === RESOURCE_POWER) fluid(visual, res, x, y, r)
+  else if (isMineral(res)) mineral(visual, res, x, y, r)
+  else if (resourceColors()[res] !== undefined) compound(visual, res, x, y, r)
+  else if (symbols().has(type)) symbol(visual, type, x, y, size ?? DEFAULT_SYMBOL_SIZE)
   else return ERR_INVALID_ARGS
   return OK
 }
