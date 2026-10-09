@@ -161,11 +161,15 @@ function compound(visual: RoomVisual, type: ResourceConstant, x: number, y: numb
   })
 }
 
+/** Default `size`. Symbol outlines are drawn 1 tile wide at this size and scale linearly from it. */
+const DEFAULT_SIZE = 0.25
+
 function symbol(visual: RoomVisual, type: string, x: number, y: number, size: number) {
   const s = symbols().get(type)
   if (!s) return
-  // Note: the outline is intentionally not scaled by `size`, matching the original.
-  visual.poly(relPoly(x, y, SYMBOL_OUTLINE), {
+  const scale = size / DEFAULT_SIZE
+  const outline = SYMBOL_OUTLINE.map(([px, py]): [number, number] => [px * scale, py * scale])
+  visual.poly(relPoly(x, y, outline), {
     opacity: 1,
     fill: s.color,
     stroke: 'transparent',
@@ -184,7 +188,7 @@ export function resource(
   type: ResourceConstant | string,
   x: number,
   y: number,
-  size = 0.25,
+  size = DEFAULT_SIZE,
 ): 0 | -10 {
   const res = type as ResourceConstant
   if (res === RESOURCE_ENERGY || res === RESOURCE_POWER) fluid(visual, res, x, y, size)

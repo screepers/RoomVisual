@@ -151,6 +151,25 @@ describe('symbols', () => {
   })
 })
 
+describe('symbol size', () => {
+  const halfWidth = (size?: number) => {
+    const { visual, calls } = fakeVisual()
+    resource(visual, 'symbol_aleph', 10, 10, size)
+    const points = calls.find((c) => c[0] === 'poly')?.[1] as [number, number][]
+    const xs = points.map(([px]) => px)
+    return (Math.max(...xs) - Math.min(...xs)) / 2
+  }
+
+  it('keeps the default outline unchanged (about one tile wide)', () => {
+    expect(halfWidth()).toBeCloseTo(0.5, 1)
+  })
+
+  it('scales the outline with size', () => {
+    expect(halfWidth(0.5)).toBeCloseTo(halfWidth() * 2, 5)
+    expect(halfWidth(0.125)).toBeCloseTo(halfWidth() / 2, 5)
+  })
+})
+
 describe('demo', () => {
   it('clears the visual, then draws six structures', () => {
     const { visual, calls } = fakeVisual()

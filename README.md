@@ -65,7 +65,7 @@ room.visual.animatedPosition(12, 32)
 ![resource-badges](res/resource-badges.png)
 
 Draws resource icon of `type` at `x`, `y`, and given `size`.
-Size defaults to `0.25`.
+`size` is the badge radius in grid units, so `0.5` fills one tile. It defaults to `0.25`.
 
 ```javascript
 // .resource(type, x, y)
