@@ -1,0 +1,84 @@
+{
+  "name": "@screepers/room-visual",
+  "version": "2.0.0-beta.0",
+  "description": "Extra RoomVisual drawing methods for Screeps: structures, roads, speech bubbles, resource badges",
+  "keywords": [
+    "screeps",
+    "roomvisual",
+    "visuals"
+  ],
+  "repository": "git@github.com:screepers/RoomVisual.git",
+  "license": "MIT",
+  "author": "Adam Shumann <ashumann13@gmail.com>",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "./dist/register.*",
+    "./dist/screeps/*"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsdown",
+    "typecheck": "tsc",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "test": "vitest run",
+    "check:package": "publint && attw --pack . --profile node16",
+    "prepublishOnly": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm check:package"
+  },
+  "peerDependencies": {
+    "@types/screeps": "^3.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/screeps": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "0.18.5",
+    "@biomejs/biome": "2.5.15",
+    "@types/screeps": "3.4.0",
+    "publint": "0.3.25",
+    "tsdown": "0.23.0",
+    "typescript": "7.0.2",
+    "vitest": "5.0.3"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./register": {
+      "import": {
+        "types": "./dist/register.d.ts",
+        "default": "./dist/register.js"
+      },
+      "require": {
+        "types": "./dist/register.d.cts",
+        "default": "./dist/register.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "register": [
+        "./dist/register.d.cts"
+      ]
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022"],
+    "types": ["screeps"],
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "isolatedDeclarations": false,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["src", "tests", "tsdown.config.ts"]
+}
