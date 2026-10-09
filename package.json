@@ -1,6 +1,6 @@
 {
   "name": "@screepers/room-visual",
-  "version": "2.0.0-beta.2",
+  "version": "2.0.0",
   "description": "Extra RoomVisual drawing methods for Screeps: structures, roads, speech bubbles, resource badges",
   "keywords": [
     "screeps",
