@@ -1,0 +1,8 @@
+export { type AnimatedPositionOpts, animatedPosition } from './animatedPosition.js'
+export { COLOR_SETS, COLORS } from './colors.js'
+export { demo } from './demo.js'
+export { install } from './install.js'
+export { resource } from './resource.js'
+export { type ConnectRoadsOpts, connectRoads } from './roads.js'
+export { type SpeechOpts, speech } from './speech.js'
+export { type StructureOpts, structure } from './structure.js'
