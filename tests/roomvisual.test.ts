@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   animatedPosition,
   connectRoads,
+  demo,
   install,
   resource,
   speech,
@@ -134,6 +135,30 @@ describe('animatedPosition', () => {
     const points = calls[0]?.[1] as number[][]
     expect(points).toHaveLength(5)
     expect(points[0]).toEqual(points[4])
+  })
+})
+
+describe('symbols', () => {
+  it("uses the game's values, even where they differ from the constant name", async () => {
+    // mod-season2 really defines RESOURCE_SYMBOL_SIN as 'symbol_sim'.
+    // The lookup table is cached per module instance, so load a fresh one.
+    vi.stubGlobal('RESOURCE_SYMBOL_SIN', 'symbol_sim')
+    vi.resetModules()
+    const fresh = await import('../src/index.js')
+    const { visual, calls } = fakeVisual()
+    expect(fresh.resource(visual, 'symbol_sim', 1, 1)).toBe(0)
+    expect(calls.length).toBeGreaterThan(0)
+  })
+})
+
+describe('demo', () => {
+  it('clears the visual, then draws six structures', () => {
+    const { visual, calls } = fakeVisual()
+    const clear = vi.fn()
+    ;(visual as unknown as { clear: () => void }).clear = clear
+    expect(demo(visual)).toBe(visual)
+    expect(clear).toHaveBeenCalledOnce()
+    expect(calls.length).toBeGreaterThan(6)
   })
 })
 

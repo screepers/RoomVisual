@@ -1,4 +1,5 @@
 import { animatedPosition } from './animatedPosition.js'
+import { demo } from './demo.js'
 import { resource } from './resource.js'
 import { connectRoads } from './roads.js'
 import { speech } from './speech.js'
@@ -23,13 +24,15 @@ declare global {
       y: number,
       opts?: import('./animatedPosition.js').AnimatedPositionOpts,
     ): RoomVisual
+    /** Clears the visual and draws a few structures near (19, 24) for a quick preview. */
+    test(): RoomVisual
     /** Draws a resource badge. Returns `OK` or `ERR_INVALID_ARGS`. */
     resource(type: ResourceConstant | string, x: number, y: number, size?: number): 0 | -10
   }
 }
 
 /**
- * Adds `structure`, `connectRoads`, `speech`, `animatedPosition` and `resource` to
+ * Adds `structure`, `connectRoads`, `speech`, `animatedPosition`, `resource` and `test` to
  * `RoomVisual.prototype`. Pass a different prototype to install elsewhere (e.g. in tests).
  */
 export function install(proto: RoomVisual = RoomVisual.prototype): void {
@@ -44,6 +47,9 @@ export function install(proto: RoomVisual = RoomVisual.prototype): void {
   }
   proto.animatedPosition = function (x, y, opts) {
     return animatedPosition(this, x, y, opts)
+  }
+  proto.test = function () {
+    return demo(this)
   }
   proto.resource = function (type, x, y, size) {
     return resource(this, type, x, y, size)
