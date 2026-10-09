@@ -9,7 +9,7 @@
   ],
   "repository": "git@github.com:screepers/RoomVisual.git",
   "license": "MIT",
-  "author": "Adam Shumann <ashumann13@gmail.com>",
+  "author": "alinanova21 <alina@alinanova.dev>",
   "type": "module",
   "files": [
     "dist"
